@@ -15,3 +15,5 @@ An archaeology activity for players. Using a specific tool, players can dig for 
 * More ground hashes + more range on rarity impact
 
 ## Original Script by Mayo | I made changes for QBCore
+
+https://github.com/itsamayo/fivem_archaeology
