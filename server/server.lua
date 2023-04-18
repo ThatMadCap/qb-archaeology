@@ -25,7 +25,7 @@ QBCore.Functions.CreateCallback("qb-archaeology:getDigItem",function(source, cb)
 		cb(true)
 	else
 		cb(false)
-		TriggerClientEvent('QBCore:Notify', source, "I need a Trowel I guess.")
+		TriggerClientEvent('QBCore:Notify', source, "I need something to dig maybe?")
 	end
 end)
 
