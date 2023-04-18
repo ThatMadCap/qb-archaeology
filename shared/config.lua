@@ -1,5 +1,6 @@
 Config = {
     -- Digging configuration
+    DigItem = 'trowel',
     Scenario = 'WORLD_HUMAN_GARDENER_PLANT',
     DigTimeMin = 10000, -- How long should it take at least to dig something up? 1000 = 1 second
     DigTimeMax = 20000, -- How long should it take at most to dig something up? 1000 = 1 second
@@ -12,7 +13,7 @@ Config = {
         [1] = { value = 10, item = 'dinoegg', label = "dinosaur egg" },
         [2] = { value = 30, item = 'pricelessjewel', label = "priceless jewel" },
         [3] = { value = 50, item = 'mythicfossil', label = "mythic fossil" },
-        [4] = { value = 80, item = 'rarefossil', label = "rare fossil" },        
+        [4] = { value = 80, item = 'rarefossil', label = "rare fossil" },
         [5] = { value = 120, item = 'necklace', label = "necklace" },
         [6] = { value = 150, item = 'skull', label = "skull" },
         [7] = { value = 180, item = 'bracelet', label = "bracelet" }
@@ -35,10 +36,7 @@ Config = {
         [3594309083] = 850, -- sand
         [2461440131] = 850, -- sand
         [1144315879] = 850, -- sand
-        [2128369009] = 850 -- sand    
+        [2128369009] = 850 -- sand     
     },
-    RequiredTool = { item = 'trowel', label = 'Trowel' }, -- Needs to exist in DB
-
-    -- NoPixel exports
-    UseNoPixelExports = true -- Only enable if using NoPixel exports    
+    RequiredTool = { item = 'trowel', label = 'Trowel' }, -- Item required for digging      
 }

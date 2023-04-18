@@ -12,7 +12,7 @@ Can be used out of the box on any server
 * Switch between native notifications and your own custom notifications using `Config.UseCustomNotification` and the `Notification()` method in `client.lua` 
 
 ## Notes
-* Set UseNoPixelExports in `config.lua` to true if using NoPixel exports
+* Set UseNoPixelExports in `config.lua` to true if using NoPixel exports (default is true)
 
 ## Updates for later maybe
 * A selling point for items - not included due to shops/selling/buying etc usually covered by an existing framework

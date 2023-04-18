@@ -1,11 +1,18 @@
-version '1.0.0'
-description 'Archeology job for NP'
-author 'mayo'
+fx_version 'cerulean'
 
-fx_version 'adamant'
+description 'Archeology job for QBCore | Changes for QBCore by Complex'
+author 'mayo'
 game 'gta5'
+version '1.0.0'
 
 client_scripts {
-    'client.lua',
-    'config.lua'
+    'client/*.lua',
+}
+
+shared_scripts {
+    'shared/config.lua'
+}
+
+server_scripts {
+    'server/*.lua'
 }
