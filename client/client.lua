@@ -109,7 +109,7 @@ function getDiggingLocation()
     if hit == 1 then
         if Config.Ground[material] then
             -- First check if location has already been dug up
-            for i, location in ipairs(alreadyDug) do                
+            for i, location in ipairs(alreadyDug) do
                 local distanceToOld = #(playerCoord - location)
                 if distanceToOld <= Config.MinDistanceBetweenSites then
                     return false, 'You already dug here, try somewhere else', hitLocation, surfaceNormal, material
