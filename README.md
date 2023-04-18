@@ -14,4 +14,4 @@ An archaeology activity for players. Using a specific tool, players can dig for 
 * Server side dig sites
 * More ground hashes + more range on rarity impact
 
-## Original Script by Mayo | I just made changed for QBCore
+## Original Script by Mayo | I made changes for QBCore
