@@ -8,9 +8,9 @@ end)
 RegisterServerEvent("qb-archaeology:success")
 AddEventHandler("qb-archaeology:success",function(item, iteminfo, itemName)
 	local src = source
-	local xPlayer = QBCore.Functions.GetPlayer(src)
+	local Player = QBCore.Functions.GetPlayer(src)
 
-	xPlayer.Functions.AddItem(iteminfo, 1)
+	Player.Functions.AddItem(iteminfo, 1)
     TriggerClientEvent('inventory:client:ItemBox', src, iteminfo, "add")
 	TriggerClientEvent("QBCore:Notify", src, "You grabbed "..itemName.."!")
 end)
@@ -20,8 +20,8 @@ QBCore.Functions.CreateUseableItem(Config.DigItem, function(source)
 end)
 
 QBCore.Functions.CreateCallback("qb-archaeology:getDigItem",function(source, cb)
-	local xPlayer = QBCore.Functions.GetPlayer(source)
-	if xPlayer.Functions.GetItemByName("trowel") then
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName("trowel") then
 		cb(true)
 	else
 		cb(false)
