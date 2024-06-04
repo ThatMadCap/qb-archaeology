@@ -7,9 +7,9 @@ local ableToDig = false
 local alreadyDug = {}
 
 -- Dig via command
-RegisterCommand("dig", function()
-    startActivity()
-end, false)
+--[[ RegisterCommand("dig", function()
+startActivity()
+end, false) ]]
 
 -- Net event if you want to call it from a usable item
 RegisterNetEvent('qb-archaeology:dig')
@@ -21,7 +21,52 @@ end)
 RegisterNetEvent('qb-archaeology:setLocationAsDug')
 AddEventHandler('qb-archaeology:setLocationAsDug', function(location)
     table.insert(alreadyDug, location)
+    SpawnDugProp(location)
 end)
+
+-- Variable used by the function below
+local rarePropChance = 1 -- 1% chance
+
+-- Spawn prop function
+function SpawnDugProp(location)
+
+    -- Determine whether to spawn the rare prop
+    local spawnRareProp = math.random(1, 100) <= rarePropChance
+
+    -- Define the model to spawn based on chance
+    local model = spawnRareProp and "xm_prop_x17_chest_closed" or "prop_pile_dirt_01"
+
+    -- Load the model
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Wait(500)
+    end
+
+    -- Adjust Z position for rare prop
+    local zOffset = spawnRareProp and 0.0 or -1
+
+    -- Create the prop
+    local prop = CreateObject(model, location.x, location.y, location.z + zOffset, true, true, true)
+
+    -- Disable collision between the prop and the player
+    SetEntityNoCollisionEntity(PlayerPedId(), prop, true)
+
+    -- Fade in the prop gradually
+    for alpha = 0, 255, 5 do
+        SetEntityAlpha(prop, alpha, false)
+        Wait(50) -- Adjust the duration of each step
+    end
+
+    -- Set the final alpha value to ensure it's fully visible
+    SetEntityAlpha(prop, 255, false)
+
+    -- Freeze entity position (stop it moving)
+    FreezeEntityPosition(prop, true)
+
+    -- Set the model as no longer needed
+    SetModelAsNoLongerNeeded(model)
+
+end
 
 
 -- Main activity method
@@ -45,7 +90,10 @@ function startActivity(playerServerId)
                     end
                     if inScenario then
                         ClearPedTasks(PlayerPedId())
-                        local val = math.random(1, Config.Ground[ground]) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now                                            
+                        local val = math.random(1, Config.Ground[ground]) -- should use math.randomseed(os.time()) to get around repetiveness but we'll keep it simple for now  
+
+                        --print("^7 You rolled: ^1" .. val .. "^7 out of: ^1" .. Config.Ground[ground])
+
                         local reward = 'nothing'
                         for i=1, #Config.RareItems, 1 do
                             if val <= Config.RareItems[i].value then
@@ -128,3 +176,209 @@ function getDiggingLocation()
         return false, 'Too steep to dig', hitLocation, surfaceNormal, material
     end
 end
+
+---------------
+
+-- Spawn Sell Ped
+CreateThread(function()
+    exports['qb-target']:SpawnPed({
+        model = Config.ArcCommonPed,
+        coords = Config.ArcCommonPedLocation,
+        minusOne = true, 
+        freeze = true, 
+        invincible = true, 
+        blockevents = true,
+        scenario = Config.Scenario,
+        target = { 
+            options = {
+                {
+                    type="client",
+                    event = "qb-archaeology:TradingMenu",
+                    icon = "fas fa-user-secret",
+                    label = "Trade your Dig Finds"
+                }
+            },
+          distance = 2.5,
+        },
+    })
+end)
+
+
+RegisterNetEvent('qb-archaeology:TradingMenu', function(data)
+    exports['qb-menu']:openMenu({
+        {
+            id = 1,
+            header = "Archaeology Trade",
+            isMenuHeader = true,
+        },
+        {
+            id = 2,
+            header = "Skull",
+            txt = "Sell 1 Skull for $100",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 2,
+                    item = 'skull'
+                }
+            }
+        },
+        {
+            id = 3,
+            header = "Pot",
+            txt = "Sell 1 Pot for $200",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 3,
+                    item = 'pot'
+                }
+            }
+        },
+        {
+            id = 4,
+            header = "Relic",
+            txt = "Sell 1 Relic for $300",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 4,
+                    item = 'relic'
+                }
+            }
+        },
+        {
+            id = 5,
+            header = "Fossil",
+            txt = "Sell 1 Fossil $400",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 5,
+                    item = 'fossil'
+                }
+            }
+        },
+        {
+            id = 6,
+            header = "Decorated Pot",
+            txt = "Sell 1 Decorated Pot for $500",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 6,
+                    item = 'decoratedpot'
+                }
+            }
+        },
+        {
+            id = 7,
+            header = "Time Capsule",
+            txt = "Sell 1 Time Capsule for $600",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 7,
+                    item = 'timecapsule'
+                }
+            }
+        },
+        {
+            id = 8,
+            header = "Rare Fossil",
+            txt = "Sell 1 Rare Fossil for $750",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 8,
+                    item = 'rarefossil'
+                }
+            }
+        },
+        {
+            id = 9,
+            header = "Onyx Relic",
+            txt = "Sell 1 Onyx Relic for $1,000",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 9,
+                    item = 'onyxrelic'
+                }
+            }
+        },
+        {
+            id = 10,
+            header = "Mythic Fossil",
+            txt = "Sell 1 Mythic Fossil for $2,500",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 10,
+                    item = 'mythicfossil'
+                }
+            }
+        },
+        {
+            id = 11,
+            header = "Ancient Red Gem",
+            txt = "Sell 1 Ancient Red Gem for $5,000",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 11,
+                    item = 'princeruby'
+                }
+            }
+        },
+        {
+            id = 12,
+            header = "Dino Egg",
+            txt = "Sell 1 Dino Egg for $7,500",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 12,
+                    item = 'dinoegg'
+                }
+            }
+        },
+        {
+            id = 13,
+            header = "Slate Tablet",
+            txt = "Sell 1 Slate Tablet for $9,000",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 13,
+                    item = 'slatetablet'
+                }
+            }
+        },
+        {
+            id = 14,
+            header = "Broken Gold Chain",
+            txt = "Sell 1 Broken Gold Chain for $10,000",
+            params = {
+                isServer = true,
+                event = "qb-archaeology:server:Trade",
+                args = {
+                    id = 14,
+                    item = 'echain'
+                }
+            }
+        },
+    })
+end)
